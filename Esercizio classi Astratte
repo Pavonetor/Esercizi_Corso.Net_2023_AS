@@ -1,0 +1,206 @@
+using System;
+using static System.Formats.Asn1.AsnWriter;
+
+namespace CalcoloRDC
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Person Citizen = new Person();
+                "Marco",
+                "Giordano",
+                63,
+                100,
+                27,
+                1,
+                2,
+                1,
+                100000000M
+                );
+
+            Citizen.getValues();
+
+            Citizen.University = 28;
+
+
+
+
+        abstract class Person
+        {
+            static int counter = 0;
+            public string _name;
+            public string _surname;
+            public int _age;
+            protected abstract int Score();
+
+        }
+
+
+        class Citizen : Person
+        {
+            protected override int Score()
+            {
+                return Score();
+            }
+
+
+            public string Name { get { return _name; } }
+            public string Surname { get { return _surname; } }
+            public string FullName { get { return _name + " " + _surname; } }
+
+            public int Age
+            {
+                get
+                { return _age; }
+                set
+                {
+                    if (value > 60)
+                    {
+                        _score += 6;
+
+
+                    }
+                    _age = value;
+                }
+            }
+        }
+        class StudentHS : Citizen
+        {
+            protected override int Score()
+            {
+                return base.Score();
+            }
+
+
+
+            public int Highschool
+            {
+                get => _highschool;
+                set
+                {
+                    if (_highschool >= 90)
+                    {
+                        _score += 7;
+                    }
+                    _highschool = value;
+                }
+            }
+        }
+        class UniStudent : Citizen
+        {
+            protected override int Score()
+            {
+                return base.Score();
+            }
+
+            public int University
+            {
+                get => _university;
+                set
+                {
+                    if (_university >= 28)
+                    {
+                        _score += 6;
+
+                    }
+                    _university = value;
+                }
+            }
+        }
+        class DMilitary : Citizen
+        {
+            protected override int Score()
+            {
+                return base.Score();
+            }
+
+            public bool Military
+            {
+                get => _military;
+                set
+                {
+                    if(_military true;)
+                    { 
+                        _score += 4;
+                    }
+                    
+
+            }
+        }
+       
+            
+            
+            
+            
+            public int Children
+            {
+                get => _children
+                set
+                {
+                    if (_children >= 1)
+                    {
+                        _score += 1;
+                    }
+                    _children = value;
+                }
+                
+
+               
+                
+
+            }
+           
+            
+            public bool Debts
+            {
+                get; set;
+
+                
+            }
+        public decimal Pil
+        {
+            get { return _pil; }
+            set
+            {
+                if (value < 1000)
+                {
+                    _score += 4;
+                }
+                _pil = value;
+            }
+        }
+        public Person(
+
+                string Name,
+                string Surname,
+                int Age,
+
+                ) 
+            {
+                _name = Name;
+                _surname = Surname;
+                
+            }
+            public void getValues()
+            {
+           
+                Console.WriteLine($"Age:{Age}");
+                Console.WriteLine($"Highschool:{Highschool}");
+                Console.WriteLine($"University:{University}");
+                Console.WriteLine($"Debts:{Debts}");
+                Console.WriteLine($"Military:{Military}");
+                Console.WriteLine($"Childrens:{Children}");
+            }
+            public int getCounter()
+            {
+                return counter;
+            }
+
+
+           
+
+        
+
+    }
+}
