@@ -14,7 +14,7 @@ namespace RdcAbstract
     {
         static void Main(string[] args)
         {
-            Cittadino Marco = new Studente("Marco", "Giordano", 23, 3, 103, true, false, 99);
+            Cittadino Marco = new Studente("Marco", "Giordani", 23, 3, 103, true, false, 99);
             Comune Napoli = new Comune("Napoli", 104, "Comune");
             Napoli.Calculate(Marco);
 
