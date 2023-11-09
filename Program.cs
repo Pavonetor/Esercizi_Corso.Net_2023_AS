@@ -47,6 +47,10 @@ namespace RdcAbstract
         public string SurName { get { return _surName; } }
         public int Age { get { return _age; } }
 
+        public abstract void Getinfo();
+        
+
+        
     }
 
     class Cittadino : Person
@@ -73,6 +77,10 @@ namespace RdcAbstract
         public bool Debt { get { return _debt; } }
         public bool Salary { get { return _salary; } }
 
+        public override void Getinfo()
+        {
+            Console.WriteLine(_name+ _surName + _age );
+        }
     }
 
     class Studente : Cittadino
@@ -88,7 +96,10 @@ namespace RdcAbstract
         }
 
         public decimal VotoDiploma { get { return _votoDiploma; } }
-
+        public override void Getinfo()
+        {
+            Console.WriteLine(_votoDiploma);
+        }
     }
 
     class StudenteUniversitario : Studente
@@ -102,6 +113,10 @@ namespace RdcAbstract
         }
 
         public decimal VotoUniversitario { get { return _votoUni; } }
+        public override void Getinfo()
+        {
+            Console.WriteLine(_votoUni);
+        }
     }
 
     class Militare : Cittadino
@@ -114,7 +129,10 @@ namespace RdcAbstract
             _servizioAnni = ServizioAnni;
         }
         public int Servizio { get { return _servizioAnni; } }
-
+        public override void Getinfo()
+        {
+            Console.WriteLine(_servizioAnni);
+        }
     }
 
 
