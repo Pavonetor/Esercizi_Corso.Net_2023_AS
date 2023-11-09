@@ -1,169 +1,223 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CalcoloRDC
+
+namespace RdcAbstract
 {
+
     internal class Program
     {
         static void Main(string[] args)
         {
-            Person Citizen = new Person();
-                "Marco",
-                "Giordano",
-                63,
-                100,
-                27,
-                false,
-                2,
-                false,
-                100000000M
-                );
+            Cittadino Marco = new Studente("Marco", "Giordano", 23, 3, 103, true, false, 99);
+            Comune Napoli = new Comune("Napoli", 104, "Comune");
+            Napoli.Calculate(Marco);
 
-            Citizen.getValues();
-
-            Citizen.University = 28;
-            
-
-        }
-        internal class Person
-        {
-            static int counter = 0;
-            string _name;
-            string _surname;
-            int _age;
-            decimal _pil;
-            int _highschool;
-            int _university;
-            int _children;
-            bool _military;
-            bool _debts;
-            int _score;
-            
-
-            public string Name { get { return _name; } }
-            public string Surname { get { return _surname; } }
-            public string FullName { get { return _name + " " + _surname; } }
-
-            public int Age
-            {
-                get
-                { return _age; }
-                set
-                {
-                    if (value > 60)
-                    {
-                        _score += 6;
-
-                    
-                    }
-                    _age = value;   
-                }
-            }
-
-            public decimal Pil
-            {
-                get { return _pil; }
-                set
-                {
-                    if (value < 1000)
-                    {
-                        _score += 4;
-                    }
-                    _pil = value;
-                }
-            }
-
-            public int Highschool
-            {
-                get => _highschool;
-                set
-                {
-                    if (_highschool >= 90)
-                    {
-                        _score += 7;
-                    }
-                    _highschool = value;
-                }
-            }
-
-            public int University
-            {
-                get => _university;
-                set
-                {
-                    if (_university >= 28)
-                    {
-                        _score += 6;
-
-                    }
-                    _university = value;
-                }
-            } 
-
-            public int Children
-            {
-                get => _children
-                set
-                {
-                    if (_children >= 1)
-                    {
-                        _score += 1;
-                    }
-                    _children = value;
-                }
-                
-
-               
-                
-
-            }
-            public bool Military
-            {
-                get; set;
-            }
-            
-            public bool Debts
-            {
-                get; set;
-
-                
-            }
-
-            public Person(
-
-                string Name,
-                string Surname,
-                int Age,
-                int Highschore,
-                int University,
-                int Children,
-                bool Military,
-                bool Debts,
-                decimal Pil
-                ) 
-            {
-                _name = Name;
-                _surname = Surname;
-                
-            }
-            public void getValues()
-            {
-           
-                Console.WriteLine($"Age:{Age}");
-                Console.WriteLine($"Maturita:{Highschool}");
-                Console.WriteLine($"University:{University}");
-                Console.WriteLine($"Debiti:{Debts}");
-                Console.WriteLine($"Militare:{Military}");
-                Console.WriteLine($"Figli:{Children}");
-            }
-            public int getCounter()
-            {
-                return counter;
-            }
-
-
-           
+            Cittadino Giovanna = new StudenteUniversitario("Giovanna", "Callegari", 21, 5, 100, true, 99, 28, false);
+            Napoli.Calculate(Elena);
 
         }
 
     }
+
+    abstract class Person
+    {
+       
+        protected string _name;
+        protected string _surName;
+        protected int _age;
+
+        public string GetName()
+        {
+            return _name + " " + _surName;
+        }
+
+        public Person(string Name, string surName, int age)
+        {
+            _name = Name;
+            _surName = surName;
+            _age = age;
+        }
+        public string Name { get { return _name; } }
+        public string SurName { get { return _surName; } }
+        public int Age { get { return _age; } }
+
+    }
+
+    class Cittadino : Person
+    {
+
+        protected int _figli;
+        protected decimal _PilComune;
+        protected bool _debt;
+        protected bool _salary;
+
+
+        public Cittadino(string Name, string surName, int age, int Figli, decimal PilComune, bool Debt, bool Salary)
+               : base(Name, surName, age)
+
+        {
+            _debt = Debt;
+            _figli = Figli;
+            _PilComune = PilComune;
+            _salary = Salary;
+        }
+
+        public int Figli { get { return _figli; } }
+        public decimal PilComune { get { return _PilComune; } }
+        public bool Debt { get { return _debt; } }
+        public bool Salary { get { return _salary; } }
+
+    }
+
+    class Studente : Cittadino
+    {
+        protected decimal _votoDiploma;
+
+        public Studente(string Name, string surName, int age, int Figli, decimal PilComune, bool Debt, bool Salary, decimal votoDiploma)
+               : base(Name, surName, age, Figli, PilComune, Debt, Salary)
+
+        {
+            _votoDiploma = votoDiploma;
+
+        }
+
+        public decimal VotoDiploma { get { return _votoDiploma; } }
+
+    }
+
+    class StudenteUniversitario : Studente
+    {
+        protected decimal _votoUni;
+
+        public StudenteUniversitario(string Name, string surName, int age, int Figli, decimal PilComune, bool Debt, decimal votoDiploma, decimal VotoUni, bool Salary)
+               : base(Name, surName, age, Figli, PilComune, Debt, Salary, votoDiploma)
+        {
+            _votoUni = VotoUni;
+        }
+
+        public decimal VotoUniversitario { get { return _votoUni; } }
+    }
+
+    class Militare : Cittadino
+    {
+        protected int _servizioAnni;
+
+        public Militare(string Name, string surName, int age, int Figli, decimal PilComune, bool Debt, int ServizioAnni, bool Salary)
+                       : base(Name, surName, age, Figli, PilComune, Debt, Salary)
+        {
+            _servizioAnni = ServizioAnni;
+        }
+        public int Servizio { get { return _servizioAnni; } }
+
+    }
+
+
 }
+
+namespace RdcAbstract
+{
+
+    abstract class Ente
+    {
+        protected string _NomeEnte;
+
+        public Ente(string nomeEnte)
+        {
+            _NomeEnte = nomeEnte;
+        }
+
+    }
+    class Comune : Ente
+    {
+        protected string _nomeComune;
+        protected int _PilComune;
+
+        public Comune(string nomeComune, int pilComune, string nomeEnte) : base(nomeEnte)
+        {
+            _nomeComune = nomeComune;
+            _PilComune = pilComune;
+        }
+
+        public int Rdc(Cittadino cittadino)
+        {
+            int count = 0;
+            int inc = 5;
+
+            if (cittadino.PilComune < 100)
+            {
+                count += inc;
+            }
+
+            if (cittadino.Figli > 1)
+            {
+                count += inc;
+            }
+
+            if (cittadino.Debt)
+            {
+                count += inc;
+            }
+
+            if ((cittadino.Age >= 18 && cittadino.Age <= 25) || (cittadino.Age >= 60 && !cittadino.Salary))
+            {
+                count += inc;
+            }
+
+            if (cittadino is Militare)
+            {
+              
+                Militare _militare = (Militare)cittadino;
+
+                if (_militare.Servizio > 0)
+                {
+                    count += inc;
+                }
+            }
+
+            if (cittadino is Studente)
+            {
+                Studente _studente = (Studente)cittadino;
+                if (_studente.VotoDiploma >= 90)
+                {
+                    count += inc;
+                }
+
+            }
+
+            if (cittadino is StudenteUniversitario)
+            {
+                StudenteUniversitario _uni = (StudenteUniversitario)cittadino;
+                if (_uni.VotoUniversitario >= 28 && (cittadino.Age >= 18 && cittadino.Age <= 25))
+                {
+                    count += inc;
+                }
+            }
+
+
+            return count;
+
+        }
+
+        public void Calculate(Cittadino cittadino)
+        {
+            int count = Rdc(cittadino);
+
+            if (count >= 25)
+            {
+                Console.WriteLine("Il Cittadino ha diritto al RDC " + count);
+            }
+            else
+            {
+                Console.WriteLine("Il Cittadino non ha diritto al RDC " + count);
+            }
+
+        }
+    }
+}
+
