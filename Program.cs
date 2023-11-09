@@ -21,6 +21,7 @@ namespace RdcAbstract
             Cittadino Giovanna = new StudenteUniversitario("Giovanna", "Callegari", 21, 5, 100, true, 99, 28, false);
             Napoli.Calculate(Giovanna);
 
+
         }
 
     }
@@ -79,6 +80,7 @@ namespace RdcAbstract
 
         public override void Getinfo()
         {
+
             Console.WriteLine(_name+ _surName + _age );
         }
     }
@@ -98,6 +100,7 @@ namespace RdcAbstract
         public decimal VotoDiploma { get { return _votoDiploma; } }
         public override void Getinfo()
         {
+            base.Getinfo();
             Console.WriteLine(_votoDiploma);
         }
     }
@@ -115,6 +118,7 @@ namespace RdcAbstract
         public decimal VotoUniversitario { get { return _votoUni; } }
         public override void Getinfo()
         {
+            base.Getinfo();
             Console.WriteLine(_votoUni);
         }
     }
@@ -131,6 +135,7 @@ namespace RdcAbstract
         public int Servizio { get { return _servizioAnni; } }
         public override void Getinfo()
         {
+            base.Getinfo();
             Console.WriteLine(_servizioAnni);
         }
     }
@@ -164,6 +169,7 @@ namespace RdcAbstract
 
         public int Rdc(Cittadino cittadino)
         {
+            cittadino.Getinfo();
             int count = 0;
             int inc = 5;
 
@@ -228,11 +234,11 @@ namespace RdcAbstract
 
             if (count >= 25)
             {
-                Console.WriteLine("Il Cittadino ha diritto al RDC " + count);
+                Console.WriteLine(" Il Cittadino ha diritto al RDC " + count);
             }
             else
             {
-                Console.WriteLine("Il Cittadino non ha diritto al RDC " + count);
+                Console.WriteLine(" Il Cittadino non ha diritto al RDC " + count);
             }
 
         }
