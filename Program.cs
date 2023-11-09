@@ -19,7 +19,7 @@ namespace RdcAbstract
             Napoli.Calculate(Marco);
 
             Cittadino Giovanna = new StudenteUniversitario("Giovanna", "Callegari", 21, 5, 100, true, 99, 28, false);
-            Napoli.Calculate(Elena);
+            Napoli.Calculate(Giovanna);
 
         }
 
