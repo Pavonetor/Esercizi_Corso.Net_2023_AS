@@ -80,7 +80,7 @@ namespace RdcAbstract
 
         public override void Getinfo()
         {
-
+            
             Console.WriteLine(_name+ _surName + _age );
         }
     }
