@@ -1,7 +1,6 @@
-using Europe_Municipality;
 using System;
 using System.Collections.Generic;
-using static Europe_Municipality.DeathPunishmentState;
+using System.Linq;
 
 namespace Europe_Municipality
 {
@@ -22,12 +21,15 @@ namespace Europe_Municipality
 
             ChangeComune(PaeseOrigine, RegioneOrigine, ProvinciaOrigine, PaeseDestinazione, RegioneDestinazione, ProvinciaDestinazione);
 
-        }
+           
 
-        private static void ChangeComune(State paeseOrigine, string regioneOrigine, string provinciaOrigine, State paeseDestinazione, string regioneDestinazione, string provinciaDestinazione)
+    static void ChangeComune(State paeseOrigine, string regioneOrigine, string provinciaOrigine, State paeseDestinazione, string regioneDestinazione, string provinciaDestinazione)
         {
 
         }
+
+
+
 
 
 
@@ -66,8 +68,8 @@ namespace Europe_Municipality
         public bool IsNatoMember { get; set; }
 
 
-        public NatoState(string bandiera, string moneta, string esercito, string costituzione, string confine, bool isNatoMember)
-            : base(bandiera, moneta, esercito, costituzione, confine)
+        public NatoState(string Name, string moneta, string esercito, string costituzione, string confine, bool isNatoMember)
+            : base(Name, moneta, esercito, costituzione, confine)
         {
             IsNatoMember = isNatoMember;
         }
@@ -104,6 +106,7 @@ namespace Europe_Municipality
 
 
 
+
     public interface IDeathPunishment
     {
 
@@ -112,8 +115,8 @@ namespace Europe_Municipality
     public class DeathPunishmentState : State, IDeathPunishment
     {
 
-        public DeathPunishmentState(string bandiera, string moneta, string esercito, string costituzione, string confine)
-            : base(bandiera, moneta, esercito, costituzione, confine)
+        public DeathPunishmentState(string Name, string moneta, string esercito, string costituzione, string confine)
+            : base(Name, moneta, esercito, costituzione, confine)
         {
 
         }
@@ -123,39 +126,57 @@ namespace Europe_Municipality
         {
 
         }
+    }
+    public class EuState : State
+    {
 
-        public class EuState : State
+        public bool IsEuMember { get; set; }
+        string _name;
+        UERegion[] _regionList;
+        int _numRegions;
+
+
+        public EuState(string Name, string moneta, string esercito, string costituzione, string confine, bool isEuMember)
+                : base(Name, moneta, esercito, costituzione, confine)
         {
-
-            public bool IsEuMember { get; set; }
-
-
-            public EuState(string bandiera, string moneta, string esercito, string costituzione, string confine, bool isEuMember)
-                : base(bandiera, moneta, esercito, costituzione, confine)
-            {
-                IsEuMember = isEuMember;
-            }
-
-        }
-        public class EurozoneState : EuState
-        {
-
-
-
-
-            public EurozoneState(string bandiera, string moneta, string esercito, string costituzione, string confine, bool isEuMember, bool usesEuroCurrency)
-                : base(bandiera, moneta, esercito, costituzione, confine, isEuMember)
-            {
-                UsesEuroCurrency = usesEuroCurrency;
-            }
+            IsEuMember = isEuMember;
+            _name = Name;
+            _regionList = new UERegion[0];
 
 
         }
-        public interface IEuroZone
+
+        public string Name { get => Name; set => value; }
+
+        public UERegion[] RegionList { get => _regionList; set => _regionList = value; }
+
+        public void AddRegion(UERegion region)
+        {
+            Array.Resize(ref _regionList, RegionList.Length + 1);
+            _regionList[_regionList.Length - 1] = region;
+        }
+
+
+
+
+
+    }
+    public class EurozoneState : EuState
+    {
+
+
+
+
+        public EurozoneState(string Name, string moneta, string esercito, string costituzione, string confine, bool isEuMember, bool usesEuroCurrency)
+            : base(Name, moneta, esercito, costituzione, confine, isEuMember)
         {
 
-            void MonetaUnica();
         }
+
+
+
+
+
 
 
 
@@ -164,9 +185,17 @@ namespace Europe_Municipality
 
             Console.WriteLine("Utilizza l'Euro come moneta unica.");
         }
-
-
     }
+
+
+    public interface IEuroZone
+    {
+
+        void MonetaUnica();
+    }
+
+
+
 
 
     public class BCE : IEuroZone
@@ -294,10 +323,40 @@ namespace Europe_Municipality
 
     }
     public class UERegion : IUEPublicAdministration
-    {
 
+    {
+        string _name;
+        UEProvince[] _provinceList;
+        EuState state;
+        int _populationregion;
+
+        public UERegion(string name)
+        {
+            _name = name;
+            _provinceList = new UEProvince[0];
+        }
+
+        public string Name { get => _name; set => _name = value; }
+
+        public EuState State { get => state; set => state = value; }
+
+        public UEProvince[] ProvinceList { get => _provinceList; set => _provinceList = value; }
+
+        public int PopulationRegion { get => _populationregion; set => _populationregion = value; }
+
+
+        public void AddProvince(UEProvince province)
+        {
+            Array.Resize(ref _provinceList, ProvinceList.Length + 1);
+            _provinceList[_provinceList.Length - 1] = province;
+        }
+
+        
+        
         public string RegionName { get; set; }
         public int NumberOfCities { get; set; }
+
+
 
         public void BorderDefinition(Parliament parliament)
         {
@@ -330,6 +389,29 @@ namespace Europe_Municipality
         public string ProvinceName { get; set; }
         public int Population { get; set; }
 
+        string _name;
+        UECity[] _CityList;
+        UERegion UeState;
+        int _populationprovince;
+
+        public UEProvince(string name)
+        {
+            _name = name;
+            _CityList = new UECity[0];
+        }
+        public string Name { get => _name; set => value; }
+        public UERegion UeRegion { get ; set; }
+
+        public UECity[] CityList { get; set; }
+        
+        public void AddCity(UECity city)
+        {
+            Array.Resize(ref _CityList, CityList.Length+1);
+            _CityList[_CityList.Length-1] = city;
+        }
+        
+
+
         public void BorderDefinition(Parliament parliament)
         {
             throw new NotImplementedException();
@@ -354,6 +436,23 @@ namespace Europe_Municipality
         {
             throw new NotImplementedException();
         }
+    }
+
+    public class UECity 
+    {
+
+        public string Name { get; set; }
+        public string CityHallLocation { get; set; }
+
+
+        public UECity(string name, string cityHallLocation)
+           
+        {
+            Name = name;
+            CityHallLocation = cityHallLocation;
+        }
+
+
     }
 
 
@@ -533,7 +632,10 @@ namespace Europe_Municipality
 
 
         }
+
+
+
     }
 
-
 }
+
