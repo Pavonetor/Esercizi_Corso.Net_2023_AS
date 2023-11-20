@@ -26,15 +26,19 @@ namespace Europe_Municipality
     static void ChangeComune(State paeseOrigine, string regioneOrigine, string provinciaOrigine, State paeseDestinazione, string regioneDestinazione, string provinciaDestinazione)
         {
 
+            }
+            var anagrafica = CreaAnagrafica(3, 2, 100);
+
+           
+            VisualizzaDettagli(anagrafica, EuComune);
+
+
+
+
+
+
+
         }
-
-
-
-
-
-
-
-    }
     public class State
     {
 
@@ -528,8 +532,10 @@ namespace Europe_Municipality
     {
         public string CitizenName { get; set; }
         public EUID EuidNumber { get; set; }
+            public object Key { get; internal set; }
+            public object Value { get; internal set; }
 
-        public EUCitizen(string citizenName, string euidNumber)
+            public EUCitizen(string citizenName, string euidNumber)
         {
             CitizenName = citizenName;
             EuidNumber = new EUID(euidNumber);
@@ -636,6 +642,47 @@ namespace Europe_Municipality
 
 
     }
+        static Dictionary<string, Dictionary<string, List<EUCitizen>>> CreaAnagrafica(int numeroRegioni, int numeroProvincePerRegione, int massimoResidentiPerComune)
+        {
+            var anagrafica = Enumerable.Range(1, numeroRegioni)
+                .ToDictionary(r => $"Regione-{r}", r => Enumerable.Range(1, numeroProvincePerRegione)
+                    .ToDictionary(p => $"Provincia-{p}", p => Enumerable.Range(1, numeroProvincePerRegione)
+                        .ToDictionary(c => $"Comune-{c}", c => Enumerable.Range(1, CalcolaNumeroResidenti(massimoResidentiPerComune, numeroRegioni, numeroProvincePerRegione))
+                            .Select(i => new EUCitizen { EuCitizenName = $"Persona-{i}" })
+                            .ToList())
+                        .ToList()));
+
+            return anagrafica;
+        }
+
+        static int CalcolaNumeroResidenti(int massimoResidentiPerComune, int numeroRegioni, int numeroProvincePerRegione)
+        {
+            
+            return massimoResidentiPerComune / (numeroRegioni * numeroProvincePerRegione);
+        }
+
+        static void VisualizzaDettagli(Dictionary<string, Dictionary<string, List<EUCitizen>>> anagrafica, EUCitizen comune)
+        {
+            foreach (var EuRegion in anagrafica)
+            {
+                Console.WriteLine($"Regione: {EuRegion.Key}");
+
+                foreach (var province in EuRegion.Value)
+                {
+                    Console.WriteLine($"  Provincia: {province.Key}");
+
+                    foreach (var EuComune in province.Value)
+                    {
+                        Console.WriteLine(value: $"    Comune: {comune.Key}, Numero Residenti: {comune.Value.Count}");
+
+                        foreach (var persona in comune.Value)
+                        {
+                            Console.WriteLine($"      Persona: {persona.Name}");
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }
-
