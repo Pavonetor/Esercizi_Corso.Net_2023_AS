@@ -11,15 +11,16 @@ namespace FalseSpotidy
         {
             
 
-            MediaPlayer mediaPlayer = new MediaPlayer();
-            mediaPlayer.RunMediaPlayer();
+            
 
 
             MediaPlayer _mediaPlayer = new MediaPlayer();
-            UserListner _userListener = new UserListner(1,"Giovanni",true,new); // Finire di scrivere le cose
-            UserInterface userInterface = new UserInterface(mediaPlayer,userListener);
+            UserListner _userListener = new UserListner(1,"Giovanni",true, new Radio[] { }, new Playlist[] { });
+            UserInterface userInterface = new UserInterface(_mediaPlayer,_userListener);
 
             userInterface.RunMenu();
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.RunMediaPlayer();
 
             Playlist myPlaylist = new Playlist("My Playlist");
             Song song1 = new Song("Canzone 1","Tizio","11",30);
@@ -28,8 +29,8 @@ namespace FalseSpotidy
             myPlaylist.AddSong(song1);
             myPlaylist.AddSong(song2);
 
-            UserListner myProfile = new UserListner(22,"My Profile",true,);
-            Playlist Playlist1 = new Playlist("sdsi");//Aggiungere le caratteristiche
+            UserListner myProfile = new UserListner(22,"My Profile",true,new Radio[] {},new Playlist[] {} );
+            Playlist Playlist1 = new Playlist("sdsi");
             Playlist Playlist2 = new Playlist("cisdjs");
 
             
@@ -328,29 +329,29 @@ namespace FalseSpotidy
             while (true)
             {
                 DisplayMenu();
-                ConsoleKeyInfo keyInfo = GetUserInput();
+                Char keyInfo = GetUserInput();
 
                 switch (keyInfo.Key)
                 {
-                    case ConsoleKey.D1:
+                    case ConsoleKey.1:
                         DisplayArtists();
                         break;
 
-                    case ConsoleKey.D2:
+                    case ConsoleKey.2:
                         DisplayUserListener();
                         break;
 
-                    case ConsoleKey.D3:
+                    case ConsoleKey.3:
                         
                         Console.WriteLine("Displaying Song information.");
                         break;
 
-                    case ConsoleKey.D4:
+                    case ConsoleKey.4:
                        
                         Console.WriteLine("Displaying Radio information.");
                         break;
 
-                    case ConsoleKey.D5:
+                    case ConsoleKey.5:
                         
                         Console.WriteLine("Displaying Playlists information.");
                         break;
@@ -368,19 +369,19 @@ namespace FalseSpotidy
 
         private void DisplayMenu()
         {
-            bool isRunning = true;
+            
 
-            while (isRunning)
-            {
+            
+            
                
                Console.WriteLine("1: Artists, 2: User Listener, 3: Song, 4: Radio, 5: Playlists, Q: Quit");
-            }
+            
             
         }
 
         private ConsoleKeyInfo GetUserInput()
         {
-            return Console.ReadKey(true);
+            return Console.ReadKey().KeyChar;
         }
 
         private void DisplayArtists()
