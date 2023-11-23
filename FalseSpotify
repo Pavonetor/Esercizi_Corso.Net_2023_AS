@@ -1,6 +1,7 @@
 using FalseSpotidy;
 using System;
 using System.Reflection;
+using System.Linq;
 
 namespace FalseSpotidy
 {
@@ -15,25 +16,29 @@ namespace FalseSpotidy
 
 
             MediaPlayer _mediaPlayer = new MediaPlayer();
-            UserListner _userListener = new UserListner(); // Finire di scrivere le cose
-            UserInterface userInterface = new UserInterface(mediaPlayer);
+            UserListner _userListener = new UserListner(1,"Giovanni",true,new); // Finire di scrivere le cose
+            UserInterface userInterface = new UserInterface(mediaPlayer,userListener);
 
             userInterface.RunMenu();
 
             Playlist myPlaylist = new Playlist("My Playlist");
-            Song song1 = new Song();//Aggiungere le caratteristiche
-            Song song2 = new Song();
+            Song song1 = new Song("Canzone 1","Tizio","11",30);
+            Song song2 = new Song("Canzone 2","Scossone","33",30);
 
             myPlaylist.AddSong(song1);
             myPlaylist.AddSong(song2);
 
-            UserListner myProfile = new UserListner("My Profile");
-            Playlist Playlist1 = Playlist();//Aggiungere le caratteristiche
-            Playlist Playlist2 = Playlist();
+            UserListner myProfile = new UserListner(22,"My Profile",true,);
+            Playlist Playlist1 = new Playlist("sdsi");//Aggiungere le caratteristiche
+            Playlist Playlist2 = new Playlist("cisdjs");
 
-            Artist myAlbum = new Artist("");
-            Album Album1 = Album(); //Aggiungere caratteristiche
-            Album Album2 = Album(); // Aggiungere caratteristiche
+            
+            Album Album1 = new Album (""); 
+            Album Album2 = new Album(""); 
+            Artist myAlbum = new Artist(11,"Tizio", "Caio",new Album[]
+            {
+                Album2
+            });
 
             myAlbum.AddAlbum(Album1);
             myAlbum.AddAlbum(Album2);
@@ -76,9 +81,9 @@ namespace FalseSpotidy
 
         public void AddPlayList(Playlist playlist)
         {
-            Array.Resize(ref Playlists, PlayLists.Length + 1);
-            PlayLists[PlayLists.Length - 1] = playlist;
-            Console.WriteLine($"PlayList '{playlist.NamePlayList} added");
+            PlayLists = PlayLists.Append(playlist).ToArray(); 
+           
+         Console.WriteLine($"PlayList '{playlist.NamePlayList} added");
         }
 
 
@@ -100,8 +105,8 @@ namespace FalseSpotidy
 
         public void AddAlbum(Album album)
         {
-            Array.Resize(ref Albums, Albums.Length + 1);
-            Albums[Albums.Length - 1] = albums;
+            Albums = Albums.Append(album).ToArray();
+            
             Console.WriteLine($"Albums'{album.Title}' added");
         }
 
@@ -129,6 +134,7 @@ namespace FalseSpotidy
     public class Playlist
     {
         public string NamePlayList { get; set; }
+        
         Song[] Songs { get; set; }
 
         public Playlist(string nameplaylist)
@@ -139,8 +145,8 @@ namespace FalseSpotidy
 
         public void AddSong(Song song)
         {
-            Array.Resize(ref Songs, Songs.Length + 1);
-            Songs[Songs.Length - 1] = song; 
+            Songs = Songs.Append(song).ToArray();
+            
             Console.WriteLine($"Song '{song.NameSong}' added to the playlist '{NamePlayList}'");
         }
         
@@ -171,7 +177,7 @@ namespace FalseSpotidy
 
         public void RunMediaPlayer()
         {
-            Console.WriteLine("Media Player is ready. Press the following keys:");
+            
             Console.WriteLine("1: Start Song, 2: Start Playlist, P: Pause, T: Stop, N: Next, B: Previous, Q: Quit");
 
             while (true)
@@ -317,7 +323,7 @@ namespace FalseSpotidy
 
         public void RunMenu()
         {
-            Console.WriteLine("Welcome to the Menu.");
+            
             
             while (true)
             {
