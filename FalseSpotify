@@ -1,0 +1,395 @@
+using FalseSpotidy;
+using System;
+using System.Reflection;
+
+namespace FalseSpotidy
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            
+
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.RunMediaPlayer();
+
+
+            MediaPlayer _mediaPlayer = new MediaPlayer();
+            UserListner _userListener = new UserListner(); // Finire di scrivere le cose
+            UserInterface userInterface = new UserInterface(mediaPlayer);
+
+            userInterface.RunMenu();
+
+            Playlist myPlaylist = new Playlist("My Playlist");
+            Song song1 = new Song();//Aggiungere le caratteristiche
+            Song song2 = new Song();
+
+            myPlaylist.AddSong(song1);
+            myPlaylist.AddSong(song2);
+
+            UserListner myProfile = new UserListner("My Profile");
+            Playlist Playlist1 = Playlist();//Aggiungere le caratteristiche
+            Playlist Playlist2 = Playlist();
+
+            Artist myAlbum = new Artist("");
+            Album Album1 = Album(); //Aggiungere caratteristiche
+            Album Album2 = Album(); // Aggiungere caratteristiche
+
+            myAlbum.AddAlbum(Album1);
+            myAlbum.AddAlbum(Album2);
+
+        }
+    }
+
+    public abstract class User
+    {
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+
+
+
+        public User(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+
+
+    }
+
+    public class UserListner : User
+    {
+        public bool IsPremium { get; set; }
+        Radio[] RadioFavorites { get; set; }
+
+        Playlist[] PlayLists { get; set; }
+
+        public UserListner(int id, string name, bool isPremium, Radio[] radioFavorites, Playlist[] playLists) : base(id, name)
+        {
+            IsPremium = isPremium;
+            RadioFavorites = radioFavorites;
+            PlayLists = new Playlist[0];
+        }
+
+        public void AddPlayList(Playlist playlist)
+        {
+            Array.Resize(ref Playlists, PlayLists.Length + 1);
+            PlayLists[PlayLists.Length - 1] = playlist;
+            Console.WriteLine($"PlayList '{playlist.NamePlayList} added");
+        }
+
+
+    }
+
+
+    public class Artist : User
+    {
+        public string Alias { get; set; }
+        public Album[] Albums { get; set; }
+
+
+        public Artist(int id, string name, string alias, Album[] albums) : base(id, name)
+        {
+            Alias = alias;
+            Albums = new Album[0];
+
+        }
+
+        public void AddAlbum(Album album)
+        {
+            Array.Resize(ref Albums, Albums.Length + 1);
+            Albums[Albums.Length - 1] = albums;
+            Console.WriteLine($"Albums'{album.Title}' added");
+        }
+
+    }
+
+    public class Album
+    {
+        public string Title { get; set; }
+
+        public Album(string title)
+        {
+            Title = title;
+        }
+    }
+
+    public class Radio
+    {
+        public string NameRadio { get; set; }
+
+        public Radio(string nameradio)
+        {
+            NameRadio = nameradio;
+        }
+    }
+    public class Playlist
+    {
+        public string NamePlayList { get; set; }
+        Song[] Songs { get; set; }
+
+        public Playlist(string nameplaylist)
+        {
+            NamePlayList = nameplaylist;
+            Songs = new Song[0];
+        }
+
+        public void AddSong(Song song)
+        {
+            Array.Resize(ref Songs, Songs.Length + 1);
+            Songs[Songs.Length - 1] = song; 
+            Console.WriteLine($"Song '{song.NameSong}' added to the playlist '{NamePlayList}'");
+        }
+        
+    }
+
+    public class Song
+    {
+        public string NameSong { get; set; }
+        public string Artist { get; set; }
+        public string ReleaseDate { get; set; }
+        public int Duration { get; set; }
+
+        Album[] Albums { get; set; } = new Album[0];
+
+        public Song(string NameSong, string Artist, string ReleaseDate, int Duration)
+        {
+
+
+
+
+        }
+    }
+
+    class MediaPlayer
+    {
+        private bool isPlaying = false;
+        private bool isPaused = false;
+
+        public void RunMediaPlayer()
+        {
+            Console.WriteLine("Media Player is ready. Press the following keys:");
+            Console.WriteLine("1: Start Song, 2: Start Playlist, P: Pause, T: Stop, N: Next, B: Previous, Q: Quit");
+
+            while (true)
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.D1:
+                        StartSong();
+                        break;
+
+                    case ConsoleKey.D2:
+                        StartPlaylist();
+                        break;
+
+                    case ConsoleKey.P:
+                        Pause();
+                        break;
+
+                    case ConsoleKey.T:
+                        Stop();
+                        break;
+
+                    case ConsoleKey.N:
+                        Next();
+                        break;
+
+                    case ConsoleKey.B:
+                        Previous();
+                        break;
+
+                    case ConsoleKey.Q:
+                        Console.WriteLine("Quitting the Media Player.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid key. Please try again.");
+                        break;
+                }
+            }
+        }
+
+        public void StartSong()
+        {
+            if (!isPlaying)
+            {
+                Console.WriteLine("Playing a song.");
+                isPlaying = true;
+                isPaused = false;
+            }
+            else
+            {
+                Console.WriteLine("Media Player is already playing.");
+            }
+        }
+
+        public void StartPlaylist()
+        {
+            if (!isPlaying)
+            {
+                Console.WriteLine("Playing a playlist.");
+                isPlaying = true;
+                isPaused = false;
+            }
+            else
+            {
+                Console.WriteLine("Media Player is already playing.");
+            }
+        }
+
+        public void Pause()
+        {
+            if (isPlaying)
+            {
+                if (!isPaused)
+                {
+                    Console.WriteLine("Media Player paused.");
+                    isPaused = true;
+                }
+                else
+                {
+                    Console.WriteLine("Media Player is already paused.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Media Player is not currently playing.");
+            }
+        }
+
+        public void Stop()
+        {
+            if (isPlaying)
+            {
+                Console.WriteLine("Media Player stopped.");
+                isPlaying = false;
+                isPaused = false;
+            }
+            else
+            {
+                Console.WriteLine("Media Player is not currently playing.");
+            }
+        }
+
+        public void Next()
+        {
+            if (isPlaying)
+            {
+                Console.WriteLine("Playing next track.");
+            }
+            else
+            {
+                Console.WriteLine("Media Player is not currently playing.");
+            }
+        }
+
+        public void Previous()
+        {
+            if (isPlaying)
+            {
+                Console.WriteLine("Playing previous track.");
+            }
+            else
+            {
+                Console.WriteLine("Media Player is not currently playing.");
+            }
+        }
+    }
+
+    class UserInterface
+    {
+        private MediaPlayer mediaPlayer;
+        private UserListner userListener;
+
+        public UserInterface(MediaPlayer mediaPlayer, UserListner userListener)
+        {
+            this.mediaPlayer = mediaPlayer;
+            this.userListener = userListener;
+        }
+
+       
+
+        public void RunMenu()
+        {
+            Console.WriteLine("Welcome to the Menu.");
+            
+            while (true)
+            {
+                DisplayMenu();
+                ConsoleKeyInfo keyInfo = GetUserInput();
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.D1:
+                        DisplayArtists();
+                        break;
+
+                    case ConsoleKey.D2:
+                        DisplayUserListener();
+                        break;
+
+                    case ConsoleKey.D3:
+                        
+                        Console.WriteLine("Displaying Song information.");
+                        break;
+
+                    case ConsoleKey.D4:
+                       
+                        Console.WriteLine("Displaying Radio information.");
+                        break;
+
+                    case ConsoleKey.D5:
+                        
+                        Console.WriteLine("Displaying Playlists information.");
+                        break;
+
+                    case ConsoleKey.Q:
+                        Console.WriteLine("Quitting the User Interface.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid key. Please try again.");
+                        break;
+                }
+            }
+        }
+
+        private void DisplayMenu()
+        {
+            bool isRunning = true;
+
+            while (isRunning)
+            {
+               
+               Console.WriteLine("1: Artists, 2: User Listener, 3: Song, 4: Radio, 5: Playlists, Q: Quit");
+            }
+            
+        }
+
+        private ConsoleKeyInfo GetUserInput()
+        {
+            return Console.ReadKey(true);
+        }
+
+        private void DisplayArtists()
+        {
+            Console.WriteLine("Displaying Artists:");
+            
+        }
+
+        private void DisplayUserListener()
+        {
+            Console.WriteLine("Displaying User Listener:");
+           
+        }
+    }
+
+
+
+}
