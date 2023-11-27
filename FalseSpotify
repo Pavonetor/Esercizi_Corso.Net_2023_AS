@@ -3,40 +3,41 @@ using System;
 using System.Reflection;
 using System.Linq;
 
+
 namespace FalseSpotidy
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            
 
-            
+
+
 
 
             MediaPlayer _mediaPlayer = new MediaPlayer();
-            UserListner _userListener = new UserListner(1,"Giovanni",true, new Radio[] { }, new Playlist[] { });
-            UserInterface userInterface = new UserInterface(_mediaPlayer,_userListener);
+            UserListner _userListener = new UserListner(1, "Giovanni", true, new Radio[] { }, new Playlist[] { });
+            UserInterface userInterface = new UserInterface(_mediaPlayer, _userListener);
 
             userInterface.RunMenu();
             MediaPlayer mediaPlayer = new MediaPlayer();
-            mediaPlayer.RunMediaPlayer();
+
 
             Playlist myPlaylist = new Playlist("My Playlist");
-            Song song1 = new Song("Canzone 1","Tizio","11",30);
-            Song song2 = new Song("Canzone 2","Scossone","33",30);
+            Song song1 = new Song("Canzone 1", "Tizio", "11", 30);
+            Song song2 = new Song("Canzone 2", "Scossone", "33", 30);
 
             myPlaylist.AddSong(song1);
             myPlaylist.AddSong(song2);
 
-            UserListner myProfile = new UserListner(22,"My Profile",true,new Radio[] {},new Playlist[] {} );
+            UserListner myProfile = new UserListner(22, "My Profile", true, new Radio[] { }, new Playlist[] { });
             Playlist Playlist1 = new Playlist("sdsi");
             Playlist Playlist2 = new Playlist("cisdjs");
 
-            
-            Album Album1 = new Album (""); 
-            Album Album2 = new Album(""); 
-            Artist myAlbum = new Artist(11,"Tizio", "Caio",new Album[]
+
+            Album Album1 = new Album("");
+            Album Album2 = new Album("");
+            Artist myAlbum = new Artist(11, "Tizio", "Caio", new Album[]
             {
                 Album2
             });
@@ -82,9 +83,9 @@ namespace FalseSpotidy
 
         public void AddPlayList(Playlist playlist)
         {
-            PlayLists = PlayLists.Append(playlist).ToArray(); 
-           
-         Console.WriteLine($"PlayList '{playlist.NamePlayList} added");
+            PlayLists = PlayLists.Append(playlist).ToArray();
+
+            Console.WriteLine($"PlayList '{playlist.NamePlayList} added");
         }
 
 
@@ -107,7 +108,7 @@ namespace FalseSpotidy
         public void AddAlbum(Album album)
         {
             Albums = Albums.Append(album).ToArray();
-            
+
             Console.WriteLine($"Albums'{album.Title}' added");
         }
 
@@ -135,7 +136,7 @@ namespace FalseSpotidy
     public class Playlist
     {
         public string NamePlayList { get; set; }
-        
+
         Song[] Songs { get; set; }
 
         public Playlist(string nameplaylist)
@@ -147,10 +148,10 @@ namespace FalseSpotidy
         public void AddSong(Song song)
         {
             Songs = Songs.Append(song).ToArray();
-            
+
             Console.WriteLine($"Song '{song.NameSong}' added to the playlist '{NamePlayList}'");
         }
-        
+
     }
 
     public class Song
@@ -171,70 +172,71 @@ namespace FalseSpotidy
         }
     }
 
-    class MediaPlayer
+    public class MediaPlayer 
     {
         private bool isPlaying = false;
         private bool isPaused = false;
 
         public void RunMediaPlayer()
         {
-            
-            Console.WriteLine("1: Start Song, 2: Start Playlist, P: Pause, T: Stop, N: Next, B: Previous, Q: Quit");
 
-            while (true)
+            Console.WriteLine("1: Start, 2: Pause, 3: Stop, 5: Next, 6: Previous, Q: Quit");
+            bool isValid = true;
+            while (isValid)
             {
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
-                switch (keyInfo.Key)
+                char keyInfo = Console.ReadKey().KeyChar;
+                keyInfo = Char.ToLower(keyInfo);
+
+                switch (keyInfo)
                 {
-                    case ConsoleKey.D1:
+                    case '1':
                         StartSong();
                         break;
 
-                    case ConsoleKey.D2:
-                        StartPlaylist();
-                        break;
-
-                    case ConsoleKey.P:
+                    case '2':
                         Pause();
                         break;
 
-                    case ConsoleKey.T:
+                    case '3':
                         Stop();
                         break;
 
-                    case ConsoleKey.N:
+                    case '4':
                         Next();
                         break;
 
-                    case ConsoleKey.B:
+                    case '5':
                         Previous();
                         break;
 
-                    case ConsoleKey.Q:
+                    case 'q':
                         Console.WriteLine("Quitting the Media Player.");
+                        isValid = false;
                         return;
 
                     default:
                         Console.WriteLine("Invalid key. Please try again.");
                         break;
                 }
+
+
+
+            }
+
+
+
+            void StartSong()
+            {
+                Console.WriteLine("Song is playing");
+
             }
         }
 
-        public void StartSong()
-        {
-            if (!isPlaying)
-            {
-                Console.WriteLine("Playing a song.");
-                isPlaying = true;
-                isPaused = false;
-            }
-            else
-            {
-                Console.WriteLine("Media Player is already playing.");
-            }
-        }
+
+
+
+
 
         public void StartPlaylist()
         {
@@ -320,66 +322,74 @@ namespace FalseSpotidy
             this.userListener = userListener;
         }
 
-       
+
 
         public void RunMenu()
         {
-            
-            
+            Console.WriteLine("Welcome to Menu");
+
             while (true)
             {
                 DisplayMenu();
-                Char keyInfo = GetUserInput();
+                char keyInfo = GetUserInput();
+                keyInfo = Char.ToLower(keyInfo);
 
-                switch (keyInfo.Key)
+
+                switch (keyInfo)
                 {
-                    case ConsoleKey.1:
+
+                    case '1':
+
+                        ChoseSong();
+                        break;
+                    case '2':
+
                         DisplayArtists();
                         break;
 
-                    case ConsoleKey.2:
+                    case '3':
+
                         DisplayUserListener();
                         break;
 
-                    case ConsoleKey.3:
-                        
-                        Console.WriteLine("Displaying Song information.");
+                    case '4':
+
+                        Console.WriteLine("Displaying Songs information.");
                         break;
 
-                    case ConsoleKey.4:
-                       
+                    case '5':
+
                         Console.WriteLine("Displaying Radio information.");
                         break;
 
-                    case ConsoleKey.5:
-                        
+                    case '6':
+
                         Console.WriteLine("Displaying Playlists information.");
                         break;
 
-                    case ConsoleKey.Q:
+                    case 'q':
                         Console.WriteLine("Quitting the User Interface.");
                         return;
 
                     default:
                         Console.WriteLine("Invalid key. Please try again.");
                         break;
+
+
+
                 }
             }
         }
 
-        private void DisplayMenu()
+        public void DisplayMenu()
         {
-            
 
-            
-            
-               
-               Console.WriteLine("1: Artists, 2: User Listener, 3: Song, 4: Radio, 5: Playlists, Q: Quit");
-            
-            
+            Console.WriteLine("1: Chose a Song 2: Artists, 3: User Listener, 4: Song, 5: Radio, 6: Playlists, Q: Quit");
+
+
         }
 
-        private ConsoleKeyInfo GetUserInput()
+        private char GetUserInput()
         {
             return Console.ReadKey().KeyChar;
         }
@@ -387,16 +397,63 @@ namespace FalseSpotidy
         private void DisplayArtists()
         {
             Console.WriteLine("Displaying Artists:");
-            
+
         }
 
         private void DisplayUserListener()
         {
             Console.WriteLine("Displaying User Listener:");
-           
+
         }
+
+
+
+        public void ChoseSong()
+        {
+
+            Console.WriteLine("Chose a Song:");
+            Console.WriteLine("1.XXX");
+            Console.WriteLine("2.YYY");
+            bool isPlaying = false;
+
+
+            if (!isPlaying)
+            {
+                Console.WriteLine("Playing a song.");
+                isPlaying = true;
+                isPaused = false;
+            }
+            else
+            {
+                Console.WriteLine("Media Player is already playing.");
+            }
+
+            while (isPlaying)
+            {
+                char keyinfo = Console.ReadKey().KeyChar;
+                keyinfo = Char.ToLower(keyinfo);
+
+                switch (keyinfo)
+                {
+                    case '1':
+                        RunMediaPlayer();
+                        break;
+
+                    case '2':
+                        RunMediaPlayer();
+                        break;
+                }
+
+            }
+
+
+        }
+
+
+
     }
-
-
-
 }
+
+
+
+
