@@ -2,7 +2,7 @@ using FalseSpotidy;
 using System;
 using System.Reflection;
 using System.Linq;
-
+using System.Globalization;
 
 namespace FalseSpotidy
 {
@@ -12,12 +12,21 @@ namespace FalseSpotidy
         {
 
 
-
-
+            
 
             MediaPlayer _mediaPlayer = new MediaPlayer();
             UserListner _userListener = new UserListner(1, "Giovanni", true, new Radio[] { }, new Playlist[] { });
             UserInterface userInterface = new UserInterface(_mediaPlayer, _userListener);
+
+
+
+
+            userInterface.SelectLangugae();
+
+            
+            userInterface.AutomaticConvertion();
+
+
 
             userInterface.RunMenu();
             MediaPlayer mediaPlayer = new MediaPlayer();
@@ -35,8 +44,8 @@ namespace FalseSpotidy
             Playlist Playlist2 = new Playlist("cisdjs");
 
 
-            Album Album1 = new Album("");
-            Album Album2 = new Album("");
+            Album Album1 = new Album("1234");
+            Album Album2 = new Album("45465");
             Artist myAlbum = new Artist(11, "Tizio", "Caio", new Album[]
             {
                 Album2
@@ -61,7 +70,10 @@ namespace FalseSpotidy
         {
             Id = id;
             Name = name;
+
         }
+
+       
 
 
 
@@ -421,7 +433,7 @@ namespace FalseSpotidy
             {
                 Console.WriteLine("Playing a song.");
                 isPlaying = true;
-                isPaused = false;
+               //isPaused = false;
             }
             else
             {
@@ -436,24 +448,54 @@ namespace FalseSpotidy
                 switch (keyinfo)
                 {
                     case '1':
-                        RunMediaPlayer();
+                       // RunMediaPlayer();
                         break;
 
                     case '2':
-                        RunMediaPlayer();
+                        //RunMediaPlayer();
                         break;
                 }
+
+            }
+
+            
+
+
+        }
+        
+        public void SelectLangugae()
+        {
+        Console.WriteLine("Chose a language: 1.Italian   2.German");
+
+            char keyinfo = Console.ReadKey().KeyChar;
+
+            switch (keyinfo)
+            {
+                case '1':
+                    Console.WriteLine("You Chose Italian");
+                    break;
+                case '2':
+                    Console.WriteLine("You Chose German");
+                    break;
+
 
             }
 
 
         }
 
+        public void AutomaticConvertion()
+        {
+            string dateInIT = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss", new CultureInfo("it"));
+            
+            Console.WriteLine(dateInIT);
+            
+        }
 
 
     }
+    
+    
 }
-
-
 
 
