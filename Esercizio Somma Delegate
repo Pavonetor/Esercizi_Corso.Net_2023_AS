@@ -1,0 +1,41 @@
+using System;
+
+class Program
+{
+
+    public delegate int SommaDelegate(int a, int b);
+
+    static void Main()
+    {
+      
+        SommaDelegate sommaDelegate = Somma;
+
+       
+        Action<SommaDelegate> secondoDelegate = EseguiOperazione;
+
+  
+        secondoDelegate(sommaDelegate);
+    }
+
+    static int Somma(int a, int b)
+    {
+        return a + b;
+    }
+
+    static void EseguiOperazione(SommaDelegate operazione)
+    {
+
+        int risultato = operazione(5, 3);
+
+        
+        Console.WriteLine("Il risultato dell'operazione è: " + risultato);
+
+        AltraFunzione(risultato);
+    }
+
+    static void AltraFunzione(int parametro)
+    {
+ 
+        Console.WriteLine("Il parametro passato è: " + parametro);
+    }
+}
